@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
+import android.hardware.Camera;
 import android.os.Build;
 import android.os.Environment;
 import android.os.PowerManager;
@@ -216,6 +217,23 @@ public class DeviceUtil {
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         boolean isScreenOn = pm.isScreenOn();
         return isScreenOn;
+    }
+
+    /**
+     * 是否包含摄像头
+     * @param index
+     * @return
+     */
+    public boolean hasCameraIndex(int index){
+        final int cameraCount = Camera.getNumberOfCameras();
+        Camera.CameraInfo info = new Camera.CameraInfo();
+        for (int i = 0; i < cameraCount; i++) {
+            Camera.getCameraInfo(i, info);
+            if (index == info.facing) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
