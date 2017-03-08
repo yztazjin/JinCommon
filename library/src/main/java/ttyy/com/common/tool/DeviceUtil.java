@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.hardware.Camera;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.PowerManager;
@@ -224,15 +226,30 @@ public class DeviceUtil {
      * @param index
      * @return
      */
-    public boolean hasCameraIndex(int index){
-        final int cameraCount = Camera.getNumberOfCameras();
-        Camera.CameraInfo info = new Camera.CameraInfo();
-        for (int i = 0; i < cameraCount; i++) {
-            Camera.getCameraInfo(i, info);
-            if (index == info.facing) {
-                return true;
+    public boolean hasCameraIndex(Integer index){
+
+        if(Build.VERSION.SDK_INT >= 21){
+            try {
+                CameraManager manager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
+                for(String indexStr : manager.getCameraIdList()){
+                    if(indexStr.equals(index.toString())){
+                        return true;
+                    }
+                }
+            } catch (CameraAccessException e) {
+                e.printStackTrace();
+            }
+        }else {
+            int cameraCount = Camera.getNumberOfCameras();
+            Camera.CameraInfo info = new Camera.CameraInfo();
+            for (int i = 0; i < cameraCount; i++) {
+                Camera.getCameraInfo(i, info);
+                if (index == info.facing) {
+                    return true;
+                }
             }
         }
+
         return false;
     }
 
