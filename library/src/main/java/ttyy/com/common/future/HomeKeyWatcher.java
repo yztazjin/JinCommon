@@ -1,4 +1,4 @@
-package ttyy.com.common.feature;
+package ttyy.com.common.future;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
