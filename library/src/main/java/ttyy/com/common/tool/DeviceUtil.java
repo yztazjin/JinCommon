@@ -185,13 +185,13 @@ public class DeviceUtil {
         return bp;
     }
 
+
     /**
      * 打开软键盘
      */
     public void openKeyboard(EditText mEditText) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(mEditText, InputMethodManager.RESULT_SHOWN);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
     /**
@@ -200,6 +200,30 @@ public class DeviceUtil {
     public void closeKeyboard(EditText mEditText) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
+    }
+
+    /**
+     * 隐藏软键盘(只适用于Activity，不适用于Fragment)
+     */
+    public void closeSoftKeyboard(Activity activity) {
+        View view = activity.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
+    /**
+     * 隐藏软键盘(可用于Activity，Fragment)
+     */
+    public void closeSoftKeyboard(Context context, List<View> viewList) {
+        if (viewList == null) return;
+
+        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+
+        for (View v : viewList) {
+            inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
     /**
