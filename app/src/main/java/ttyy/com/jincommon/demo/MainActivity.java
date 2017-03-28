@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import ttyy.com.common.future.PyInfoGetter;
+import ttyy.com.common.log.log;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,5 +27,7 @@ public class MainActivity extends AppCompatActivity {
         tv_ip.setText("IP: "+ PyInfoGetter.getPyValue(this, "ip"));
         tv_port.setText("PORT: "+PyInfoGetter.getPyValue(this, "port"));
         tv_channel.setText("Channel: "+PyInfoGetter.getPyValue(this, "channel"));
+
+        log.d("Test", "TestLog");
     }
 }

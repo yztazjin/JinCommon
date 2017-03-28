@@ -18,9 +18,10 @@ public class App {
     private static Context mContext;
 
     public static Context getInstance(){
-        if(mContext == null){
+        if(mContext != null){
             return mContext;
         }
+        init();
         return mContext;
     }
 
