@@ -7,11 +7,13 @@
     android:gravity="center"
     tools:context="ttyy.com.jincommon.demo.MainActivity">
 
-    <Button
+    <TextView
         android:id="@+id/tv_wm_test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:text="Test Wm!"/>
+        android:padding="15dp"
+        android:background="#ccc"
+        android:text="Show Test Window!"/>
 
 </LinearLayout>

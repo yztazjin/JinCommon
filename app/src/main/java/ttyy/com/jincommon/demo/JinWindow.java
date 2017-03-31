@@ -27,12 +27,10 @@ public class JinWindow {
 
         params = new WindowManager.LayoutParams();
         // 类型
-        params.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        params.type = WindowManager.LayoutParams.TYPE_TOAST;
         // WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
         // 设置flag
-        int flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-//         | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-        // 如果设置了WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE，弹出的View收不到Back键的事件
+        int flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
         params.flags = flags;
         // 不设置这个弹出框的透明遮罩显示为黑色
         params.format = PixelFormat.TRANSLUCENT;
@@ -64,6 +62,9 @@ public class JinWindow {
         wm.addView(mView, params);
 
         params.flags &= ~WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        if((params.flags & WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE) > 0){
+            params.flags &= ~WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+        }
         params.flags |= WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         wm.updateViewLayout(mView, params);
     }
