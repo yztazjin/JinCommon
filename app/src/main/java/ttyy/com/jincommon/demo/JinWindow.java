@@ -22,7 +22,7 @@ public class JinWindow {
     static JinWindow INSTANCE;
     WindowManager.LayoutParams params;
 
-    private JinWindow(Context context){
+    private JinWindow(Context context) {
         wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 
         params = new WindowManager.LayoutParams();
@@ -30,7 +30,8 @@ public class JinWindow {
         params.type = WindowManager.LayoutParams.TYPE_TOAST;
         // WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
         // 设置flag
-        int flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+        int flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
         params.flags = flags;
         // 不设置这个弹出框的透明遮罩显示为黑色
         params.format = PixelFormat.TRANSLUCENT;
@@ -51,18 +52,18 @@ public class JinWindow {
         });
     }
 
-    public static JinWindow getInstance(Context context){
-        if(INSTANCE == null){
+    public static JinWindow getInstance(Context context) {
+        if (INSTANCE == null) {
             INSTANCE = new JinWindow(context.getApplicationContext());
         }
         return INSTANCE;
     }
 
-    public void show(){
+    public void show() {
         wm.addView(mView, params);
 
         params.flags &= ~WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-        if((params.flags & WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE) > 0){
+        if ((params.flags & WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE) > 0) {
             params.flags &= ~WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
         }
         params.flags |= WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
