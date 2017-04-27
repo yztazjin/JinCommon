@@ -14,6 +14,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import ttyy.com.common.tool.App;
+import ttyy.com.common.tool.Tools;
 
 /**
  * author: admin
@@ -89,6 +90,13 @@ public class __ExternalLog implements __$logging{
         @Override
         public void run() {
             try {
+
+                float availableBytes = Tools.get().getMemorySpaceUtil().getSDCardAvailableBytes();
+                if(availableBytes < LogConfig.getInstance().getExternalLimitSize()){
+                    // 当有用空间不足时不写入日志文件
+                    return;
+                }
+
                 File file = getExternalLogFile(tag);
                 if(file == null
                         || !file.exists()){

@@ -20,6 +20,8 @@ public class LogConfig {
 
     boolean isDebug = true;
 
+    int mExternalLimitSize = 20 * 1024 * 1024;
+
     Set<__$logging> loggings = new HashSet<__$logging>() {
         {
             add(__RuntimeLog.INSTANCE);
@@ -74,6 +76,17 @@ public class LogConfig {
 
     public boolean isDebug(){
         return this.isDebug;
+    }
+
+    public LogConfig setExternalLimitSize(int size){
+        if(size > 0)
+            mExternalLimitSize = size;
+        return this;
+    }
+
+    public int getExternalLimitSize(){
+
+        return mExternalLimitSize;
     }
 
 }

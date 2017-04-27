@@ -22,6 +22,7 @@ public class Tools {
     NetworkUtil mNetworkUtil;
     ResourceUtil mResourceUtil;
     ApplicationUtil mApplicationUtil;
+    MemorySpaceUtil mMemorySpaceUtil;
 
     private Tools(Context context){
         mContext = context;
@@ -34,6 +35,7 @@ public class Tools {
                 inst = INSTANCE;
                 if(inst == null){
                     inst = new Tools(App.getInstance());
+                    INSTANCE = inst;
                 }
             }
         }
@@ -101,6 +103,15 @@ public class Tools {
         }
 
         return mApplicationUtil;
+    }
+
+    public MemorySpaceUtil getMemorySpaceUtil(){
+
+        if(mMemorySpaceUtil == null){
+            mMemorySpaceUtil = new MemorySpaceUtil();
+        }
+
+        return mMemorySpaceUtil;
     }
 
 }
