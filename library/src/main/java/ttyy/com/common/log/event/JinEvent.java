@@ -1,6 +1,5 @@
 package ttyy.com.common.log.event;
 
-import android.app.Application;
 import android.util.Log;
 
 import ttyy.com.common.log.LogConfig;
@@ -16,36 +15,37 @@ import ttyy.com.common.log.log;
 
 public class JinEvent {
 
-    static String TAG = "Event";
-
-    public static void init(String tag, Application context){
-        LogConfig.getInstance().setEnableExternalLog(true)
-                                .setExternalLogDir(context.getExternalFilesDir("log"));
-
-        TAG = tag;
+    public static LogConfig getConfig(){
+        return LogConfig.getInstance();
     }
 
     public static void add(String message){
+        String TAG = LogConfig.getInstance().getTag();
         LogConfig.getInstance().getExternalLog().printLog(Log.DEBUG, TAG, message);
     }
 
     public static void add(Throwable message){
+        String TAG = LogConfig.getInstance().getTag();
         LogConfig.getInstance().getExternalLog().printLog(Log.DEBUG, TAG, Log.getStackTraceString(message));
     }
 
     public static void err(String message){
+        String TAG = LogConfig.getInstance().getTag();
         log.e(TAG, message);
     }
 
     public static void err(Throwable message){
+        String TAG = LogConfig.getInstance().getTag();
         log.$e(TAG, message);
     }
 
     public static void log(String message){
+        String TAG = LogConfig.getInstance().getTag();
         LogConfig.getInstance().getRuntimeLog().printLog(Log.DEBUG, TAG, message);
     }
 
     public static void log(Throwable message){
+        String TAG = LogConfig.getInstance().getTag();
         LogConfig.getInstance().getRuntimeLog().printLog(Log.DEBUG, TAG, Log.getStackTraceString(message));
     }
 
