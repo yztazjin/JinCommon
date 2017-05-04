@@ -66,6 +66,7 @@ public class __ExternalLog implements __$logging{
         resetExternalLogDir();
         if(mExternalLogDir == null
                 || !mExternalLogDir.exists()){
+            Log.w("ExternalLog", "mExternalLogDir is Null or mExternalLogDir not Exists!");
             return;
         }
         logAsync(level, tag, msg);
