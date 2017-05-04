@@ -22,6 +22,8 @@ public class LogConfig {
 
     int mExternalLimitSize = 20 * 1024 * 1024;
 
+    String TAG = "Event";
+
     Set<__$logging> loggings = new HashSet<__$logging>() {
         {
             add(__RuntimeLog.INSTANCE);
@@ -40,6 +42,15 @@ public class LogConfig {
     public LogConfig setIsDebug(boolean value) {
         this.isDebug = value;
         return this;
+    }
+
+    public LogConfig setTag(String tag){
+        TAG = tag;
+        return this;
+    }
+
+    public String getTag(){
+        return TAG;
     }
 
     public LogConfig setEnableExternalLog(boolean value) {
