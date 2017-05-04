@@ -89,4 +89,12 @@ public class LogConfig {
         return mExternalLimitSize;
     }
 
+    public __$logging getExternalLog(){
+        return __ExternalLog.INSTANCE;
+    }
+
+    public __$logging getRuntimeLog(){
+        return __RuntimeLog.INSTANCE;
+    }
+
 }
