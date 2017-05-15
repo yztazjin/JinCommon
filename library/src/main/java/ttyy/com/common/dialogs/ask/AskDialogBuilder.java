@@ -92,6 +92,18 @@ public class AskDialogBuilder extends BaseDialogBuilder {
         return this;
     }
 
+    @Override
+    public AskDialogBuilder setCancelable(boolean value) {
+        super.setCancelable(value);
+        return this;
+    }
+
+    @Override
+    public AskDialogBuilder setCanceledOnTouchOutside(boolean value) {
+        super.setCanceledOnTouchOutside(value);
+        return this;
+    }
+
     public AskDialogBuilder setTitleTextColor(int titleTextColor) {
         this.titleTextColor = titleTextColor;
         return this;
