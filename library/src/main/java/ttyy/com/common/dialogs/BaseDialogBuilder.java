@@ -24,6 +24,9 @@ public abstract class BaseDialogBuilder {
 
     private int windowBackgroundColor;
 
+    private boolean cancelable;
+    private boolean canceledOnTouchOutside;
+
     private Context context;
 
     public BaseDialogBuilder(Context context){
@@ -32,6 +35,9 @@ public abstract class BaseDialogBuilder {
         windowHeight = WindowManager.LayoutParams.WRAP_CONTENT;
         windowBackgroundColor = Color.WHITE;
         dim = 0.7f;
+
+        cancelable = true;
+        canceledOnTouchOutside = true;
 
         radius = new int[]{8,8,8,8};
     }
@@ -107,6 +113,24 @@ public abstract class BaseDialogBuilder {
         radius[2] = br;
         radius[3] = bl;
         return this;
+    }
+
+    public BaseDialogBuilder setCancelable(boolean value){
+        cancelable = value;
+        return this;
+    }
+
+    public boolean getCancelable(){
+        return cancelable;
+    }
+
+    public BaseDialogBuilder setCanceledOnTouchOutside(boolean value){
+        canceledOnTouchOutside = value;
+        return this;
+    }
+
+    public boolean getCanceledOnTouchOutside(){
+        return canceledOnTouchOutside;
     }
 
     public abstract <T extends BaseDialog> T build();
