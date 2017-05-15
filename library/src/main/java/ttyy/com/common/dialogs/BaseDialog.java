@@ -24,6 +24,9 @@ public abstract class BaseDialog extends Dialog{
         super(builder.getContext());
         mBuilder = builder;
 
+        setCancelable(builder.getCancelable());
+        setCanceledOnTouchOutside(builder.getCanceledOnTouchOutside());
+
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
