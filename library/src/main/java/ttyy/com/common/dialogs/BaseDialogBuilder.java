@@ -28,11 +28,12 @@ public abstract class BaseDialogBuilder {
 
     public BaseDialogBuilder(Context context){
         this.context = context;
-        windowWidth = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.812f);
+        windowWidth = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.7f);
         windowHeight = WindowManager.LayoutParams.WRAP_CONTENT;
         windowBackgroundColor = Color.WHITE;
+        dim = 0.7f;
 
-        radius = new int[]{5,5,5,5};
+        radius = new int[]{8,8,8,8};
     }
 
     public Context getContext(){
@@ -83,8 +84,7 @@ public abstract class BaseDialogBuilder {
                 radius[0],radius[0],
                 radius[1],radius[1],
                 radius[2],radius[2],
-                radius[3],radius[3],
-                radius[4],radius[4]});
+                radius[3],radius[3]});
 
         return drawable;
     }
