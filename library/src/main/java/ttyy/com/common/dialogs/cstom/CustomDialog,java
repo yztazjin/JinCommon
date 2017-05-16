@@ -26,11 +26,11 @@ public class CustomDialog extends BaseDialog{
     public void setContentView(View view) {
         CustomDialogBuilder builder = getBuilder();
         super.setContentView(builder.getContentLayoutId());
+
+        propertySetters(builder);
     }
 
-    @Override
-    protected final void onRootViewInitialized(LinearLayout mRootView) {
-        CustomDialogBuilder builder = getBuilder();
+    void propertySetters(CustomDialogBuilder builder){
         for(Map.Entry<Integer, CharSequence> entry : builder.getTextSetters().entrySet()){
             int id = entry.getKey();
             CharSequence cs = entry.getValue();
@@ -39,12 +39,17 @@ public class CustomDialog extends BaseDialog{
             tv.setText(cs);
         }
 
-        for(Map.Entry<Integer, View.OnClickListener> entry : builder.getClickListenerSetters().entrySet()){
+        for(Map.Entry<Integer, CstmOnClickListener> entry : builder.getClickListenerSetters().entrySet()){
             int id = entry.getKey();
-            View.OnClickListener listener = entry.getValue();
-
+            CstmOnClickListener listener = entry.getValue();
+            listener.instance = this;
             findViewById(id).setOnClickListener(listener);
         }
+    }
+
+    @Override
+    protected final void onRootViewInitialized(LinearLayout mRootView) {
+
     }
 
     @Override
