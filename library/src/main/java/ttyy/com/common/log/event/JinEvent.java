@@ -39,6 +39,26 @@ public class JinEvent {
         log.$e(TAG, message);
     }
 
+    public static void crash(String message){
+        // Crash 进入常用日志
+        String TAG = LogConfig.getInstance().getTag();
+        log.e(TAG, message);
+
+        // Crash 单独列出 方便跟踪
+        TAG = "Crash";
+        log.e(TAG, message);
+    }
+
+    public static void crash(Throwable message){
+        // Crash 进入常用日志
+        String TAG = LogConfig.getInstance().getTag();
+        log.$e(TAG, message);
+
+        // Crash 单独列出 方便跟踪
+        TAG = "Crash";
+        log.$e(TAG, message);
+    }
+
     public static void log(String message){
         String TAG = LogConfig.getInstance().getTag();
         LogConfig.getInstance().getRuntimeLog().printLog(Log.DEBUG, TAG, message);
