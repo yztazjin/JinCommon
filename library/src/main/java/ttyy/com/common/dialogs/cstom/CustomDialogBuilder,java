@@ -1,0 +1,118 @@
+package ttyy.com.common.dialogs.cstm;
+
+import android.content.Context;
+import android.view.View;
+
+import java.util.HashMap;
+
+import ttyy.com.common.dialogs.BaseDialogBuilder;
+
+/**
+ * author: admin
+ * date: 2017/05/16
+ * version: 0
+ * mail: secret
+ * desc: CustomDialogBuilder
+ */
+
+public class CustomDialogBuilder extends BaseDialogBuilder{
+
+    private int contentLayoutId;
+
+    private HashMap<Integer, CharSequence> textSetters;
+    private HashMap<Integer, View.OnClickListener> clickListenerSetters;
+
+    public CustomDialogBuilder(Context context) {
+        super(context);
+
+        textSetters = new HashMap<>();
+        clickListenerSetters = new HashMap<>();
+    }
+
+    @Override
+    public CustomDialogBuilder setWindowBackgroundColor(int color) {
+        super.setWindowBackgroundColor(color);
+        return this;
+    }
+
+    @Override
+    public CustomDialogBuilder setWindowWidth(int value) {
+        super.setWindowWidth(value);
+        return this;
+    }
+
+    @Override
+    public CustomDialogBuilder setWindowHeight(int value) {
+        super.setWindowHeight(value);
+        return this;
+    }
+
+    @Override
+    public CustomDialogBuilder setDim(float value) {
+        super.setDim(value);
+        return this;
+    }
+
+    @Override
+    public CustomDialogBuilder setRadius(int r) {
+        super.setRadius(r);
+        return this;
+    }
+
+    @Override
+    public CustomDialogBuilder setRadius(int tl, int tr, int br, int bl) {
+        super.setRadius(tl, tr, br, bl);
+        return this;
+    }
+
+    @Override
+    public CustomDialogBuilder setCancelable(boolean value) {
+        super.setCancelable(value);
+        return this;
+    }
+
+    @Override
+    public CustomDialogBuilder setCanceledOnTouchOutside(boolean value) {
+        super.setCanceledOnTouchOutside(value);
+        return this;
+    }
+
+    public CustomDialogBuilder setContentLayoutId(int id){
+        contentLayoutId = id;
+        return this;
+    }
+
+    public int getContentLayoutId(){
+        return contentLayoutId;
+    }
+
+    //================================属性设置=====================================================//
+
+    public CustomDialogBuilder setText(int id, CharSequence text){
+        textSetters.put(id, text);
+        return this;
+    }
+
+    public CustomDialogBuilder setOnClickListener(int id, View.OnClickListener listener){
+        clickListenerSetters.put(id, listener);
+        return this;
+    }
+
+    public HashMap<Integer, CharSequence> getTextSetters(){
+        return textSetters;
+    }
+
+    public HashMap<Integer, View.OnClickListener> getClickListenerSetters(){
+        return clickListenerSetters;
+    }
+
+    @Override
+    public CustomDialog build() {
+        return new CustomDialog(this);
+    }
+
+    @Override
+    public void show() {
+        build().show();
+    }
+}
