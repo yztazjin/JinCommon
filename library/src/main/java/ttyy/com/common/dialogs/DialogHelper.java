@@ -1,5 +1,12 @@
 package ttyy.com.common.dialogs;
 
+import android.app.Activity;
+
+import ttyy.com.common.dialogs.ask.AskDialogBuilder;
+import ttyy.com.common.dialogs.chose.ChoseDialogBuilder;
+import ttyy.com.common.dialogs.cstm.CustomDialogBuilder;
+import ttyy.com.common.dialogs.msg.MsgDialogBuilder;
+
 /**
  * author: admin
  * date: 2017/05/15
@@ -9,4 +16,23 @@ package ttyy.com.common.dialogs;
  */
 
 public class DialogHelper {
+
+    private DialogHelper(){}
+
+    public static AskDialogBuilder getAskDialog(Activity context){
+        return new AskDialogBuilder(context);
+    }
+
+    public static MsgDialogBuilder getMsgDialog(Activity context){
+        return new MsgDialogBuilder(context);
+    }
+
+    public static ChoseDialogBuilder getChooseDialog(Activity context){
+        return new ChoseDialogBuilder(context);
+    }
+
+    public static CustomDialogBuilder getCustomDialog(Activity context){
+        return new CustomDialogBuilder(context);
+    }
+
 }
