@@ -20,7 +20,7 @@ public class CustomDialogBuilder extends BaseDialogBuilder{
     private int contentLayoutId;
 
     private HashMap<Integer, CharSequence> textSetters;
-    private HashMap<Integer, View.OnClickListener> clickListenerSetters;
+    private HashMap<Integer, CstmOnClickListener> clickListenerSetters;
 
     public CustomDialogBuilder(Context context) {
         super(context);
@@ -93,7 +93,7 @@ public class CustomDialogBuilder extends BaseDialogBuilder{
         return this;
     }
 
-    public CustomDialogBuilder setOnClickListener(int id, View.OnClickListener listener){
+    public CustomDialogBuilder setOnClickListener(int id, CstmOnClickListener listener){
         clickListenerSetters.put(id, listener);
         return this;
     }
@@ -102,7 +102,7 @@ public class CustomDialogBuilder extends BaseDialogBuilder{
         return textSetters;
     }
 
-    public HashMap<Integer, View.OnClickListener> getClickListenerSetters(){
+    public HashMap<Integer, CstmOnClickListener> getClickListenerSetters(){
         return clickListenerSetters;
     }
 
