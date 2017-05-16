@@ -1,0 +1,54 @@
+package ttyy.com.common.dialogs.cstm;
+
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.util.Map;
+
+import ttyy.com.common.dialogs.BaseDialog;
+
+/**
+ * author: admin
+ * date: 2017/05/16
+ * version: 0
+ * mail: secret
+ * desc: CustomDialog
+ */
+
+public class CustomDialog extends BaseDialog{
+
+    public CustomDialog(CustomDialogBuilder builder) {
+        super(builder);
+    }
+
+    @Override
+    public void setContentView(View view) {
+        CustomDialogBuilder builder = getBuilder();
+        super.setContentView(builder.getContentLayoutId());
+    }
+
+    @Override
+    protected final void onRootViewInitialized(LinearLayout mRootView) {
+        CustomDialogBuilder builder = getBuilder();
+        for(Map.Entry<Integer, CharSequence> entry : builder.getTextSetters().entrySet()){
+            int id = entry.getKey();
+            CharSequence cs = entry.getValue();
+
+            TextView tv = (TextView) findViewById(id);
+            tv.setText(cs);
+        }
+
+        for(Map.Entry<Integer, View.OnClickListener> entry : builder.getClickListenerSetters().entrySet()){
+            int id = entry.getKey();
+            View.OnClickListener listener = entry.getValue();
+
+            findViewById(id).setOnClickListener(listener);
+        }
+    }
+
+    @Override
+    public LinearLayout getRootView() {
+        return null;
+    }
+}
