@@ -3,7 +3,6 @@ package ttyy.com.common.media.recorder.voice;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
-import android.os.Handler;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
