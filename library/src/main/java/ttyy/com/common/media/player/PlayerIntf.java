@@ -27,6 +27,8 @@ public interface PlayerIntf {
 
     boolean isPlaying();
 
+    void release();
+
     abstract class Callback{
 
         public void onBufferingUpdate(MediaPlayer mp, int percent){
