@@ -88,7 +88,10 @@ public class ImplFromMedia implements PlayerIntf {
     public void playFromAssets(Context context, String filename) {
         if(mMediaPlayer == null){
             initMediaPlayer();
+        }else {
+            mMediaPlayer.reset();
         }
+
         try {
             AssetManager asset = context.getAssets();
             AssetFileDescriptor fd = null;
@@ -108,6 +111,8 @@ public class ImplFromMedia implements PlayerIntf {
     public void playFromSdcard(String path) {
         if(mMediaPlayer == null){
             initMediaPlayer();
+        }else {
+            mMediaPlayer.reset();
         }
 
         try {
@@ -125,6 +130,8 @@ public class ImplFromMedia implements PlayerIntf {
     public void playFromResources(Context context, int resiId) {
         if(mMediaPlayer == null){
             initMediaPlayer();
+        }else {
+            mMediaPlayer.reset();
         }
 
         mMediaPlayer = MediaPlayer.create(context, resiId);
@@ -134,6 +141,8 @@ public class ImplFromMedia implements PlayerIntf {
     public void playFromNetwork(Context context, String url) {
         if(mMediaPlayer == null){
             initMediaPlayer();
+        }else {
+            mMediaPlayer.reset();
         }
 
         try {
@@ -164,5 +173,14 @@ public class ImplFromMedia implements PlayerIntf {
             return mMediaPlayer.isPlaying();
         }
         return false;
+    }
+
+    @Override
+    public void release() {
+        if(mMediaPlayer != null){
+            mMediaPlayer.stop();
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+        }
     }
 }
