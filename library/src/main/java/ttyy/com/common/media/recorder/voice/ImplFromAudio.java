@@ -3,6 +3,7 @@ package ttyy.com.common.media.recorder.voice;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.os.Handler;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
@@ -74,7 +75,7 @@ public class ImplFromAudio implements RecorderIntf {
 
     @Override
     public File getRecordedFile() {
-        if(mRecorderState == RECORD_CONVERTING){
+        if (mRecorderState == RECORD_CONVERTING) {
             try {
                 Thread.sleep(50);
                 getRecordedFile();
@@ -88,6 +89,7 @@ public class ImplFromAudio implements RecorderIntf {
     @Override
     public RecorderIntf startRecord() {
         if (mAudioRecord != null) {
+            mAudioRecord.stop();
             mAudioRecord.startRecording();
         } else {
             Log.w("ImplAudio", "mAudioRecord Not Initialized So Auto Initialized!");
@@ -101,6 +103,7 @@ public class ImplFromAudio implements RecorderIntf {
 
         mRecorderState = RECORDING;
         mRecordStartMillions = System.currentTimeMillis();
+
         new AudioStreamTaker().start();
 
         return this;
@@ -161,18 +164,17 @@ public class ImplFromAudio implements RecorderIntf {
             super.run();
             try {
                 ByteArrayOutputStream mOriginalAudioStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[mMinBufferSize];
                 while (mRecorderState == RECORDING) {
 
-                    byte[] buffer = new byte[mMinBufferSize];
-
-                    int flag = mAudioRecord.read(buffer, 0, buffer.length);
-                    if (flag == AudioRecord.SUCCESS) {
+                    int readSize = mAudioRecord.read(buffer, 0, buffer.length);
+                    if (readSize > 0) {
                         mOriginalAudioStream.write(buffer);
                     }
 
                 }
 
-                if(mRecorderState == RECORD_STOPPED){
+                if (mRecorderState == RECORD_STOPPED) {
                     mRecorderState = RECORD_CONVERTING;
                     // 写入文件
                     FileOutputStream fos = new FileOutputStream(mOutputFile);
@@ -180,7 +182,7 @@ public class ImplFromAudio implements RecorderIntf {
                     long totalAudioLen = mOriginalAudioStream.size();
                     long totalDataLen = totalAudioLen + 36;
                     long longSampleRate = AUDIO_SAMPLE_RATEINHZ;
-                    int channels = 2;
+                    int channels = 1;
                     long byteRate = 16 * AUDIO_SAMPLE_RATEINHZ * channels / 8;
                     writeWaveFileHeader(fos, totalAudioLen, totalDataLen, longSampleRate, channels, byteRate);
                     mOriginalAudioStream.writeTo(fos);
@@ -193,8 +195,8 @@ public class ImplFromAudio implements RecorderIntf {
 
                 mOriginalAudioStream.close();
 
-                if(mCallback != null){
-                    switch (mRecorderState){
+                if (mCallback != null) {
+                    switch (mRecorderState) {
                         case RECORD_STOPPED:
                             int seconds = Math.round((System.currentTimeMillis() - mRecordStartMillions) / 1000f);
                             mCallback.onRecordSuccess(mOutputFile, seconds);
@@ -210,12 +212,12 @@ public class ImplFromAudio implements RecorderIntf {
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-                if(mCallback != null){
+                if (mCallback != null) {
                     mCallback.onRecordFail(e);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                if(mCallback != null){
+                if (mCallback != null) {
                     mCallback.onRecordFail(e);
                 }
             }
