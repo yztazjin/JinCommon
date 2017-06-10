@@ -5,6 +5,7 @@ import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -89,13 +90,15 @@ public class ImplFromMedia implements PlayerIntf {
         if(mMediaPlayer == null){
             initMediaPlayer();
         }else {
+            if(mMediaPlayer.isPlaying()){
+                mMediaPlayer.stop();
+            }
             mMediaPlayer.reset();
         }
 
         try {
             AssetManager asset = context.getAssets();
-            AssetFileDescriptor fd = null;
-            fd = asset.openFd(filename);
+            AssetFileDescriptor fd = asset.openFd(filename);
             mMediaPlayer.setDataSource(fd.getFileDescriptor());
             mMediaPlayer.prepareAsync();
         } catch (IOException e) {
@@ -112,6 +115,9 @@ public class ImplFromMedia implements PlayerIntf {
         if(mMediaPlayer == null){
             initMediaPlayer();
         }else {
+            if(mMediaPlayer.isPlaying()){
+                mMediaPlayer.stop();
+            }
             mMediaPlayer.reset();
         }
 
@@ -131,10 +137,14 @@ public class ImplFromMedia implements PlayerIntf {
         if(mMediaPlayer == null){
             initMediaPlayer();
         }else {
+            if(mMediaPlayer.isPlaying()){
+                mMediaPlayer.stop();
+            }
             mMediaPlayer.reset();
         }
 
         mMediaPlayer = MediaPlayer.create(context, resiId);
+        mMediaPlayer.start();
     }
 
     @Override
@@ -142,6 +152,9 @@ public class ImplFromMedia implements PlayerIntf {
         if(mMediaPlayer == null){
             initMediaPlayer();
         }else {
+            if(mMediaPlayer.isPlaying()){
+                mMediaPlayer.stop();
+            }
             mMediaPlayer.reset();
         }
 
