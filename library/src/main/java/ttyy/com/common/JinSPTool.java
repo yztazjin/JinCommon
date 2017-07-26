@@ -40,6 +40,10 @@ public class JinSPTool {
         return ppsp;
     }
 
+    public boolean has(String key){
+        return sp.contains(key);
+    }
+    
     public final JinSPTool putString(String key, String value){
         value = value == null ? "":value;
         sp.edit().putString(key, value).commit();
