@@ -1,5 +1,6 @@
 package ttyy.com.common.headset;
 
+import android.annotation.TargetApi;
 import android.bluetooth.BluetoothA2dp;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothClass;
@@ -11,6 +12,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
+import android.os.Build;
+import android.os.Handler;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -226,6 +229,7 @@ public class HeadsetManager {
      * 蓝牙广播
      */
     class HeadSetReceiver extends BroadcastReceiver{
+        @TargetApi(Build.VERSION_CODES.KITKAT)
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -235,12 +239,12 @@ public class HeadsetManager {
                     if (intent.getIntExtra("state", 0) == 0) {
                         // 拔出有线耳机
                         if(callback != null){
-                            callback.onWiredHeadsetStateChanged(false);
+                            callback.onWiredHeadsetDisconnected();
                         }
                     } else if (intent.getIntExtra("state", 0) == 1) {
                         // 插入无线耳机
                         if(callback != null){
-                            callback.onWiredHeadsetStateChanged(true);
+                            callback.onWiredHeadsetConnected();
                         }
                     }
                 }
@@ -250,6 +254,29 @@ public class HeadsetManager {
 
             int state = 0;
             switch (action){
+                case BluetoothAdapter.ACTION_STATE_CHANGED:
+                    int blueState = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, 0);
+                    switch(blueState){
+                        case BluetoothAdapter.STATE_TURNING_ON:
+                            // 蓝牙正在打开
+                            break;
+                        case BluetoothAdapter.STATE_ON:
+                            // 蓝牙已经打开
+                            if(callback != null){
+                                callback.onBluetoothOpened();
+                            }
+                            break;
+                        case BluetoothAdapter.STATE_TURNING_OFF:
+                            // 蓝牙正在关闭
+                            break;
+                        case BluetoothAdapter.STATE_OFF:
+                            // 蓝牙已经关闭
+                            if(callback != null){
+                                callback.onBluetoothClosed();
+                            }
+                            break;
+                    }
+                    break;
                 case BluetoothDevice.ACTION_FOUND:
                     // 蓝牙设备查找广播
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
@@ -305,7 +332,7 @@ public class HeadsetManager {
                         case 2:
                             // 蓝牙耳机已经连接上
                             if(callback != null){
-                                callback.onBluetoothHeadsetStateChanged(true);
+                                callback.onBluetoothHeadsetConnected();
                             }
                             break;
                         case 3:
@@ -314,7 +341,7 @@ public class HeadsetManager {
                         case 0:
                             // 蓝牙耳机已经断连
                             if(callback != null){
-                                callback.onBluetoothHeadsetStateChanged(false);
+                                callback.onBluetoothHeadsetDisconnected();
                             }
                             break;
                     }
@@ -361,9 +388,17 @@ public class HeadsetManager {
 
     public interface StateCallback{
 
-        void onWiredHeadsetStateChanged(boolean isConnected);
+        void onWiredHeadsetConnected();
 
-        void onBluetoothHeadsetStateChanged(boolean isConnected);
+        void onWiredHeadsetDisconnected();
+
+        void onBluetoothOpened();
+
+        void onBluetoothClosed();
+
+        void onBluetoothHeadsetConnected();
+
+        void onBluetoothHeadsetDisconnected();
 
     }
 
