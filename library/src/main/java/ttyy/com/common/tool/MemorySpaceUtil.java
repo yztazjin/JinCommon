@@ -2,6 +2,7 @@ package ttyy.com.common.tool;
 
 import android.os.Environment;
 import android.os.StatFs;
+import android.telephony.SignalStrength;
 
 /**
  * Author: hjq
@@ -13,19 +14,18 @@ import android.os.StatFs;
 public class MemorySpaceUtil {
 
     protected MemorySpaceUtil(){
-
     }
 
-    public int getTotalSpaceBytes(String path){
+    public long getTotalSpaceBytes(String path){
 
         StatFs stat = new StatFs(path);
-        int blockSize = stat.getBlockSize();
-        int blockCount = stat.getBlockCount();
+        long blockSize = stat.getBlockSize();
+        long blockCount = stat.getBlockCount();
 
         return blockSize * blockCount;
     }
 
-    public int getAvailableSpaceBytes(String path){
+    public long getAvailableSpaceBytes(String path){
 
         StatFs stat = new StatFs(path);
         int blockSize = stat.getBlockSize();
@@ -34,7 +34,7 @@ public class MemorySpaceUtil {
         return blockSize * availableCount;
     }
 
-    public int getSDCardTotalBytes(){
+    public long getSDCardTotalBytes(){
 
         if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)
                 && Environment.getExternalStorageDirectory() != null){
@@ -45,7 +45,7 @@ public class MemorySpaceUtil {
         return -1;
     }
 
-    public int getSDCardAvailableBytes(){
+    public long getSDCardAvailableBytes(){
 
         if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)
                 && Environment.getExternalStorageDirectory() != null){
@@ -56,7 +56,7 @@ public class MemorySpaceUtil {
         return -1;
     }
 
-    public int getRomTotalBytes(){
+    public long getRomTotalBytes(){
 
         if(Environment.getDataDirectory() != null){
             return getTotalSpaceBytes(Environment.getDataDirectory().getAbsolutePath());
@@ -65,7 +65,7 @@ public class MemorySpaceUtil {
         return -1;
     }
 
-    public int getRomAvailableBytes(){
+    public long getRomAvailableBytes(){
         if(Environment.getDataDirectory() != null){
             return getAvailableSpaceBytes(Environment.getDataDirectory().getAbsolutePath());
         }
