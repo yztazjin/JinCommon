@@ -23,9 +23,11 @@ public class Tools {
     ResourceUtil mResourceUtil;
     ApplicationUtil mApplicationUtil;
     MemorySpaceUtil mMemorySpaceUtil;
+    CalendarUtil mCalendarUtil;
 
     private Tools(Context context){
         mContext = context;
+        mCalendarUtil = new CalendarUtil();
     }
 
     public static Tools get(){
@@ -112,6 +114,10 @@ public class Tools {
         }
 
         return mMemorySpaceUtil;
+    }
+    
+    public CalendarUtil getCalendarUtil(){
+        return mCalendarUtil;
     }
 
 }
