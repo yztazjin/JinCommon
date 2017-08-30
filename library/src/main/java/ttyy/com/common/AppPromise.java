@@ -13,9 +13,9 @@ import java.util.concurrent.LinkedBlockingDeque;
  * date: 2017/2/4 0004
  * version: 0
  * mail: hujinqi@hy.com
- * desc: JinPromise
+ * desc: AppPromise
  */
-public class JinPromise {
+public class AppPromise {
 
     private static final int MAX_VALUE = 20;
 
@@ -32,23 +32,23 @@ public class JinPromise {
 
     private LoopingThread mLoopingThread;
 
-    private JinPromise() {
+    private AppPromise() {
         mProQueue = new LinkedBlockingDeque<>(MAX_VALUE);
         mHandler = new Handler(Looper.getMainLooper());
         isAutoFinish = true;
     }
 
-    public static JinPromise get() {
+    public static AppPromise get() {
 
-        return new JinPromise();
+        return new AppPromise();
     }
 
-    public JinPromise setAutoFinish(boolean value){
+    public AppPromise setAutoFinish(boolean value){
         this.isAutoFinish = value;
         return this;
     }
 
-    public final JinPromise then(Action action) {
+    public final AppPromise then(Action action) {
         if (action == null) {
             return this;
         }
@@ -58,7 +58,7 @@ public class JinPromise {
         return this;
     }
 
-    public final JinPromise then(Action action, Action error) {
+    public final AppPromise then(Action action, Action error) {
         if (action != null) {
             error.setActionType(Action.ERR);
             action.setSelfErrorAction(error);
@@ -67,7 +67,7 @@ public class JinPromise {
         return this;
     }
 
-    public final JinPromise err(Action error) {
+    public final AppPromise err(Action error) {
         if (error == null) {
             return this;
         }
@@ -134,7 +134,7 @@ public class JinPromise {
 
                     if(isAutoFinish
                             && mProQueue.size() == 0){
-                        Log.i("JinPromise", "tasks empty and auto finish looping");
+                        Log.i("AppPromise", "tasks empty and auto finish looping");
                         break;
                     }
 
@@ -184,7 +184,7 @@ public class JinPromise {
 
         private int mActionType = NOR;
         protected long mDelayedMillions;
-        protected JinPromise mPromise;
+        protected AppPromise mPromise;
         protected Object[] mParams;
         protected Action mSelfErrorAction;
 
@@ -195,7 +195,7 @@ public class JinPromise {
             run(mParams);
         }
 
-        private Action bind(JinPromise promise) {
+        private Action bind(AppPromise promise) {
             mPromise = promise;
             return this;
         }

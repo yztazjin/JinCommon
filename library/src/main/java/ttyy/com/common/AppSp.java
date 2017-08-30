@@ -9,11 +9,11 @@ import java.util.Set;
 /**
  * Created by justin on 15/12/29.
  */
-public class JinSPTool {
+public class AppSp {
 
     protected SharedPreferences sp;
 
-    private JinSPTool(String name, Context context){
+    private AppSp(String name, Context context){
         sp = context.getSharedPreferences(name, Context.MODE_PRIVATE);
     }
 
@@ -23,8 +23,8 @@ public class JinSPTool {
      * @param context
      * @return
      */
-    public static JinSPTool create(String name, Context context){
-        JinSPTool ppsp = new JinSPTool(name,context);
+    public static AppSp create(String name, Context context){
+        AppSp ppsp = new AppSp(name,context);
         return ppsp;
     }
 
@@ -34,9 +34,9 @@ public class JinSPTool {
      * @param context
      * @return
      */
-    public static JinSPTool createDefault(Context context){
+    public static AppSp createDefault(Context context){
         String name = context.getPackageName().replaceAll(".", "_");
-        JinSPTool ppsp = create(name,context);
+        AppSp ppsp = create(name,context);
         return ppsp;
     }
 
@@ -44,33 +44,33 @@ public class JinSPTool {
         return sp.contains(key);
     }
     
-    public final JinSPTool putString(String key, String value){
+    public final AppSp putString(String key, String value){
         value = value == null ? "":value;
         sp.edit().putString(key, value).commit();
         return this;
     }
 
-    public final JinSPTool putStringSet(String key, Set<String> values){
+    public final AppSp putStringSet(String key, Set<String> values){
         sp.edit().putStringSet(key, values);
         return this;
     }
 
-    public final JinSPTool putInteger(String key, int value){
+    public final AppSp putInteger(String key, int value){
         sp.edit().putInt(key, value).commit();
         return this;
     }
 
-    public final JinSPTool putBoolean(String key, boolean value){
+    public final AppSp putBoolean(String key, boolean value){
         sp.edit().putBoolean(key, value).commit();
         return this;
     }
 
-    public final JinSPTool putFloat(String key, float value){
+    public final AppSp putFloat(String key, float value){
         sp.edit().putFloat(key, value).commit();
         return this;
     }
 
-    public final JinSPTool putLong(String key, long value){
+    public final AppSp putLong(String key, long value){
         sp.edit().putLong(key, value).commit();
         return this;
     }

@@ -10,10 +10,10 @@ import android.provider.Settings;
  * date: 2017/04/27
  * version: 0
  * mail: secret
- * desc: JinPermissionUtil
+ * desc: AppPermissionUtil
  */
 
-public class JinPermissionUtil {
+public class AppPermissionUtil {
 
     int mRequestCode = 5001;
 
@@ -22,7 +22,7 @@ public class JinPermissionUtil {
     Activity mActivity;
     PermissionListener mPermissionListener;
 
-    private JinPermissionUtil(Activity mActivity) {
+    private AppPermissionUtil(Activity mActivity) {
 
         this.mActivity = mActivity;
 
@@ -41,12 +41,12 @@ public class JinPermissionUtil {
     }
 
 
-    public static JinPermissionUtil create(Activity activity) {
+    public static AppPermissionUtil create(Activity activity) {
         if (activity == null) {
             throw new RuntimeException("Activity Can't Be Null");
         }
 
-        return new JinPermissionUtil(activity);
+        return new AppPermissionUtil(activity);
     }
 
     public static abstract class PermissionListener {

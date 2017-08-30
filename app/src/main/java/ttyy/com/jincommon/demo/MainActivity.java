@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import ttyy.com.common.future.PyInfoGetter;
 import ttyy.com.common.log.log;
-import ttyy.com.common.permission.JinPermissionUtil;
+import ttyy.com.common.permission.AppPermissionUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        JinPermissionUtil util = JinPermissionUtil.create(this);
+        AppPermissionUtil util = AppPermissionUtil.create(this);
         Log.e("Test", "isApiSupportRequestPermission "+util.isApiSupportRequestPermission());
         Log.e("Test", "WRITE_EXTERNAL_STORAGE "+util.isPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE));
         Log.e("Test", "WRITE_EXTERNAL_STORAGE "+util.isPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE));

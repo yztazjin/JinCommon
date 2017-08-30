@@ -7,22 +7,22 @@ import ttyy.com.common.media.player.voice.ImplFromMedia;
  * date: 2017/06/09
  * version: 0
  * mail: secret
- * desc: JinPlayer
+ * desc: AppPlayer
  */
 
-public class JinPlayer {
+public class AppPlayer {
 
     PlayerIntf mImplFromMedia;
 
-    private JinPlayer(){
+    private AppPlayer(){
         mImplFromMedia = new ImplFromMedia();
     }
 
     static class Holder{
-        static JinPlayer INSTANCE = new JinPlayer();
+        static AppPlayer INSTANCE = new AppPlayer();
     }
 
-    public static JinPlayer getInstance(){
+    public static AppPlayer getInstance(){
         return Holder.INSTANCE;
     }
 

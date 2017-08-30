@@ -8,24 +8,24 @@ import ttyy.com.common.media.recorder.voice.ImplFromMedia;
  * date: 2017/06/09
  * version: 0
  * mail: secret
- * desc: JinRecorder
+ * desc: AppRecorder
  */
 
-public class JinRecorder {
+public class AppRecorder {
 
     RecorderIntf mAudioImpl;
     RecorderIntf mMediaImpl;
 
-    private JinRecorder(){
+    private AppRecorder(){
         mAudioImpl = new ImplFromAudio();
         mMediaImpl = new ImplFromMedia();
     }
 
     static class Holder{
-        static JinRecorder INSTANCE = new JinRecorder();
+        static AppRecorder INSTANCE = new AppRecorder();
     }
 
-    public static JinRecorder get(){
+    public static AppRecorder get(){
         return Holder.INSTANCE;
     }
 
