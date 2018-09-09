@@ -19,9 +19,9 @@ public interface UiSeMenu {
 
     int getMenuHeight();
 
-    void showAtRawPoint(View view, float x, float y);
+    void showAtWinPoint(View view, float x, float y, MenuGravity direction);
 
-    void updateRawPoint(float x, float y);
+    void updateWinPoint(float x, float y, MenuGravity direction);
 
     void updateSize(int width, int height);
 

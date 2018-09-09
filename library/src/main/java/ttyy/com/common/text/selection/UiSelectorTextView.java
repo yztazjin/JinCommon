@@ -7,14 +7,13 @@ import android.text.Layout;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.BackgroundColorSpan;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
 import ttyy.com.common.text.selection.base.CursorType;
-import ttyy.com.common.text.selection.base.OffsetType;
+import ttyy.com.common.text.selection.base.MenuGravity;
 import ttyy.com.common.text.selection.base.UiSeResources;
 import ttyy.com.common.text.selection.base.UiSelector;
 
@@ -67,6 +66,7 @@ public class UiSelectorTextView implements UiSelector {
 
         }
     };
+
     private void initialize(){
         mOnScrollChangedListener = new ViewTreeObserver.OnScrollChangedListener() {
             @Override
@@ -189,7 +189,17 @@ public class UiSelectorTextView implements UiSelector {
     }
 
     @Override
-    public void updateUiSelectionOffsetFromRawPoint(OffsetType type, float rawX, float rawY) {
+    public void updateUiSelectionOffsetFromWinPoint(CursorType type, float winX, float winY) {
+        int[] point = getWinPointForRealView();
+
+        winX = winX - point[0] - mTextView.getPaddingLeft();
+        winY = winY - point[1] - mTextView.getPaddingTop();
+
+        updateUiSelectionOffsetFromRelPoint(type, winX, winY);
+    }
+
+    @Override
+    public void updateUiSelectionOffsetFromRawPoint(CursorType type, float rawX, float rawY) {
         int[] point = getRawPointForRealView();
 
         rawX = rawX - point[0] - mTextView.getPaddingLeft();
@@ -199,13 +209,14 @@ public class UiSelectorTextView implements UiSelector {
     }
 
     @Override
-    public void updateUiSelectionOffsetFromRelPoint(OffsetType type, float relX, float relY) {
+    public void updateUiSelectionOffsetFromRelPoint(CursorType type, float relX, float relY) {
         int oldStart = getSelectionInfo().getStart();
         int oldEnd = getSelectionInfo().getEnd();
 
         int position = mTextView.getOffsetForPosition(relX, relY);
         switch (type){
-            case Start:
+            case Left:
+                // left is selection start
                 if (position > oldEnd - 1){
                     position = oldEnd - 1;
                 }
@@ -213,13 +224,14 @@ public class UiSelectorTextView implements UiSelector {
                 if (position != oldStart){
                     setUiSelection(position, oldEnd);
                     int start = getSelectionInfo().getStart();
-                    float[] startRawPoint = getRawPointForSelectionOffset(start);
+                    float[] startRawPoint = getWinPointForSelectionOffset(start);
                     getUiResources().getUiCursor(CursorType.Left)
-                            .updateRawPoint(startRawPoint[0], startRawPoint[1]);
+                            .updateWinPoint(startRawPoint[0], startRawPoint[1]);
                 }
 
                 break;
-            case End:
+            case Right:
+                // right is selection end
                 if (position < oldStart + 1){
                     position = oldStart + 1;
                 }
@@ -227,12 +239,11 @@ public class UiSelectorTextView implements UiSelector {
                 if (position != oldEnd){
                     setUiSelection(oldStart, position);
                     int end = getSelectionInfo().getEnd();
-                    float[] endRawPoint = getRawPointForSelectionOffset(end - 1);
+                    float[] endRawPoint = getWinPointForSelectionOffset(end - 1);
                     float delta = mTextView.getPaint().measureText(mTextView.getText(), end-1, end);
                     getUiResources().getUiCursor(CursorType.Right)
-                            .updateRawPoint(endRawPoint[0] + delta, endRawPoint[1]);
+                            .updateWinPoint(endRawPoint[0] + delta, endRawPoint[1]);
                 }
-
 
                 break;
         }
@@ -283,6 +294,25 @@ public class UiSelectorTextView implements UiSelector {
     }
 
     @Override
+    public float[] getWinPointForSelectionOffset(int offset) {
+        float[] relPoint = getRelPointForSelectionOffset(offset);
+
+        int[] winPoint = getWinPointForRealView();
+
+        relPoint[0] += winPoint[0] + mTextView.getPaddingLeft();
+        relPoint[1] += winPoint[1] + mTextView.getPaddingTop();
+
+        return relPoint;
+    }
+
+    @Override
+    public int[] getWinPointForRealView() {
+        int[] point = new int[2];
+        mTextView.getLocationInWindow(point);
+        return point;
+    }
+
+    @Override
     public int[] getRawPointForRealView() {
         int[] point = new int[2];
         mTextView.getLocationOnScreen(point);
@@ -292,15 +322,15 @@ public class UiSelectorTextView implements UiSelector {
     @Override
     public void showUiCursors() {
         int start = getSelectionInfo().getStart();
-        float[] startRawPoint = getRawPointForSelectionOffset(start);
+        float[] startWinPoint = getWinPointForSelectionOffset(start);
         getUiResources().getUiCursor(CursorType.Left)
-                .showAtRawPoint(mTextView, startRawPoint[0], startRawPoint[1]);
+                .showAtWinPoint(mTextView, startWinPoint[0], startWinPoint[1]);
 
         int end = getSelectionInfo().getEnd();
-        float[] endRawPoint = getRawPointForSelectionOffset(end - 1);
+        float[] endWinPoint = getWinPointForSelectionOffset(end - 1);
         float delta = mTextView.getPaint().measureText(mTextView.getText(), end-1, end);
         getUiResources().getUiCursor(CursorType.Right)
-                .showAtRawPoint(mTextView, endRawPoint[0] + delta, endRawPoint[1]);
+                .showAtWinPoint(mTextView, endWinPoint[0] + delta, endWinPoint[1]);
 
     }
 
@@ -313,21 +343,28 @@ public class UiSelectorTextView implements UiSelector {
     @Override
     public void showUiMenu() {
         int start = getSelectionInfo().getStart();
-        float[] startRawPoint = getRawPointForSelectionOffset(start);
+        float[] startRawPoint = getWinPointForSelectionOffset(start);
 
         int end = getSelectionInfo().getEnd();
-        float[] endRawPoint = getRawPointForSelectionOffset(end - 1);
+        float[] endRawPoint = getWinPointForSelectionOffset(end - 1);
 
         float rawMenuX = 0;
         if (endRawPoint[1] != startRawPoint[1]){
-            rawMenuX = mTextView.getWidth() / 2 + getRawPointForRealView()[0];
+            rawMenuX = mTextView.getWidth() / 2 + getWinPointForRealView()[0];
         }else {
             rawMenuX = (endRawPoint[0] + startRawPoint[0]
                     + getUiResources().getUiCursor(CursorType.Left).getCursorWidth()) / 2;
         }
 
-        float rawMenuY = startRawPoint[1] - mTextView.getLineHeight();
-        getUiResources().getUiMenu().showAtRawPoint(mTextView, rawMenuX, rawMenuY);
+        float rawMenuY = 0;
+        MenuGravity direction = MenuGravity.Top;
+        rawMenuY = startRawPoint[1] - mTextView.getLineHeight();
+        if ((rawMenuY - getUiResources().getUiMenu().getMenuHeight()) < 0){
+//            rawMenuY = startRawPoint[1];
+            direction = MenuGravity.Bottom;
+        }
+
+        getUiResources().getUiMenu().showAtWinPoint(mTextView, rawMenuX, rawMenuY, direction);
     }
 
     @Override
@@ -337,6 +374,18 @@ public class UiSelectorTextView implements UiSelector {
 
     @Override
     public void destroy() {
+        if (mTextView == null){
+            return;
+        }
 
+        mTextView.getViewTreeObserver().removeOnWindowAttachListener(mOnWindowAttachListener);
+        mTextView.getViewTreeObserver().removeOnPreDrawListener(mOnPreDrawListener);
+        mTextView.getViewTreeObserver().removeOnScrollChangedListener(mOnScrollChangedListener);
+        mTextView.setOnLongClickListener(null);
+        mTextView.setOnClickListener(null);
+        mTextView = null;
+
+        mResources = null;
+        mSelectionInfo = null;
     }
 }

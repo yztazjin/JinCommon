@@ -23,9 +23,9 @@ public interface UiSeCursor {
 
     int getCursorHeight();
 
-    void showAtRawPoint(View view, float x, float y);
+    void showAtWinPoint(View view, float x, float y);
 
-    void updateRawPoint(float x, float y);
+    void updateWinPoint(float x, float y);
 
     void updateSize(int width, int height);
 

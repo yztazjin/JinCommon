@@ -19,15 +19,21 @@ public interface UiSelector {
 
     void setUiSelection(int start, int end);
 
-    void updateUiSelectionOffsetFromRawPoint(OffsetType type, float rawX, float rawY);
+    void updateUiSelectionOffsetFromWinPoint(CursorType type, float winX, float winY);
 
-    void updateUiSelectionOffsetFromRelPoint(OffsetType type, float rawX, float rawY);
+    void updateUiSelectionOffsetFromRawPoint(CursorType type, float rawX, float rawY);
+
+    void updateUiSelectionOffsetFromRelPoint(CursorType type, float relX, float relY);
 
     UiSeResources getUiResources();
 
     float[] getRelPointForSelectionOffset(int offset);
 
     float[] getRawPointForSelectionOffset(int offset);
+
+    float[] getWinPointForSelectionOffset(int offset);
+
+    int[] getWinPointForRealView();
 
     int[] getRawPointForRealView();
 

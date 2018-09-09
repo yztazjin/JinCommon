@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import ttyy.com.common.text.selection.base.MenuGravity;
 import ttyy.com.common.text.selection.base.UiSeMenu;
 import ttyy.com.common.text.selection.base.UiSelector;
 
@@ -112,16 +113,31 @@ public class UiSeMenuDefault implements UiSeMenu {
     }
 
     @Override
-    public void showAtRawPoint(View view, float x, float y) {
+    public void showAtWinPoint(View view, float x, float y, MenuGravity direction) {
         x -= getMenuWidth() / 2;
-        y = y - getMenuHeight() - mOffsetY;
+        switch (direction){
+            case Top:
+                y = y - getMenuHeight() - mOffsetY;
+                break;
+            case Bottom:
+                y = y + mOffsetY;
+                break;
+        }
+
         mMenuPopup.showAtLocation(view, Gravity.NO_GRAVITY, (int)x, (int)y);
     }
 
     @Override
-    public void updateRawPoint(float x, float y) {
+    public void updateWinPoint(float x, float y, MenuGravity direction) {
         x -= getMenuWidth() / 2;
-        y = y - getMenuHeight() - mOffsetY;
+        switch (direction){
+            case Top:
+                y = y - getMenuHeight() - mOffsetY;
+                break;
+            case Bottom:
+                y = y + mOffsetY;
+                break;
+        }
         mMenuPopup.update((int)x, (int)y, -1, -1);
     }
 

@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.PopupWindow;
 
 import ttyy.com.common.text.selection.base.CursorType;
-import ttyy.com.common.text.selection.base.OffsetType;
 import ttyy.com.common.text.selection.base.UiSeCursor;
 import ttyy.com.common.text.selection.base.UiSelector;
 
@@ -86,7 +85,7 @@ public class UiSeCursorDefault implements UiSeCursor {
     }
 
     @Override
-    public void showAtRawPoint(View view, float x, float y) {
+    public void showAtWinPoint(View view, float x, float y) {
         if (getCursorType() == CursorType.Left) {
             x -= getCursorWidth();
         }
@@ -94,7 +93,7 @@ public class UiSeCursorDefault implements UiSeCursor {
     }
 
     @Override
-    public void updateRawPoint(float x, float y) {
+    public void updateWinPoint(float x, float y) {
         if (getCursorType() == CursorType.Left) {
             x -= getCursorWidth();
         }
@@ -129,9 +128,6 @@ public class UiSeCursorDefault implements UiSeCursor {
             mPaint.setColor(Color.BLUE);
         }
 
-        float mRelDownX;
-        float mRelDownY;
-
         int mOldStart;
         float[] mOldStartRawPoint;
         int mOldEnd;
@@ -141,8 +137,6 @@ public class UiSeCursorDefault implements UiSeCursor {
         public boolean onTouchEvent(MotionEvent event) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    mRelDownX = event.getX();
-                    mRelDownY = event.getY();
 
                     mOldStart = getUiSelector().getSelectionInfo().getStart();
                     mOldStartRawPoint = getUiSelector().getRawPointForSelectionOffset(mOldStart);
@@ -168,7 +162,7 @@ public class UiSeCursorDefault implements UiSeCursor {
                             y = mOldEndRawPoint[1];
                         }
 
-                        getUiSelector().updateUiSelectionOffsetFromRawPoint(OffsetType.Start,
+                        getUiSelector().updateUiSelectionOffsetFromRawPoint(getCursorType(),
                                 x,
                                 y);
 
@@ -178,7 +172,7 @@ public class UiSeCursorDefault implements UiSeCursor {
                             y = mOldStartRawPoint[1];
                         }
 
-                        getUiSelector().updateUiSelectionOffsetFromRawPoint(OffsetType.End,
+                        getUiSelector().updateUiSelectionOffsetFromRawPoint(getCursorType(),
                                 x,
                                 y);
 
