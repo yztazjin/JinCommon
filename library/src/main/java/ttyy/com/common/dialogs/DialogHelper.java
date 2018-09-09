@@ -4,7 +4,6 @@ import android.app.Activity;
 
 import ttyy.com.common.dialogs.ask.AskDialogBuilder;
 import ttyy.com.common.dialogs.chose.ChoseDialogBuilder;
-import ttyy.com.common.dialogs.cstm.CustomDialogBuilder;
 import ttyy.com.common.dialogs.msg.MsgDialogBuilder;
 
 /**
@@ -29,10 +28,6 @@ public class DialogHelper {
 
     public static ChoseDialogBuilder getChooseDialog(Activity context){
         return new ChoseDialogBuilder(context);
-    }
-
-    public static CustomDialogBuilder getCustomDialog(Activity context){
-        return new CustomDialogBuilder(context);
     }
 
 }
